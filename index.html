@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>國圖翻拍清單</title>
+<meta name="description" content="國家圖書館總館一趟：書單、索書號、在架狀態、每本要翻拍的章節。">
+<style>
+:root{
+  --bg:#f6f4ef; --card:#ffffff; --ink:#1f1d1a; --muted:#6b665e; --line:#e2ddd3;
+  --accent:#8a3b2b; --accent-soft:#f3e4df; --ok:#2e7d4f; --ok-soft:#e3f1e8; --warn:#9a6b00; --warn-soft:#fbf0d2; --no:#8d2f2f; --no-soft:#f6dede;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15140f; --card:#201e18; --ink:#ece7dd; --muted:#a39d91; --line:#36332b;
+    --accent:#e29b86; --accent-soft:#3a251f; --ok:#8fd3a8; --ok-soft:#1f3627; --warn:#f0c868; --warn-soft:#3a3016; --no:#f0a0a0; --no-soft:#3d2222;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15140f; --card:#201e18; --ink:#ece7dd; --muted:#a39d91; --line:#36332b;
+  --accent:#e29b86; --accent-soft:#3a251f; --ok:#8fd3a8; --ok-soft:#1f3627; --warn:#f0c868; --warn-soft:#3a3016; --no:#f0a0a0; --no-soft:#3d2222;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 -apple-system,"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 80px}
+header{padding:20px 0 8px}
+h1{font-size:1.5rem;margin:0 0 4px;line-height:1.3}
+.sub{color:var(--muted);font-size:.95rem;margin:0}
+h2{font-size:1.2rem;margin:28px 0 10px;padding-top:8px;border-top:2px solid var(--accent);scroll-margin-top:64px}
+h3{font-size:1.05rem;margin:18px 0 8px}
+p{margin:8px 0}
+ul{padding-left:1.2em;margin:6px 0}
+li{margin:4px 0}
+nav.jump{position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0;display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;border-bottom:1px solid var(--line)}
+nav.jump a{flex:0 0 auto;padding:8px 12px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:.92rem;white-space:nowrap}
+.note{background:var(--accent-soft);border-left:4px solid var(--accent);padding:10px 12px;border-radius:6px;margin:10px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0}
+.card.done{opacity:.55}
+.card .top{display:flex;gap:10px;align-items:flex-start}
+.card input[type=checkbox]{width:24px;height:24px;flex:0 0 auto;margin:4px 0 0;accent-color:var(--accent)}
+.card .title{font-weight:700;font-size:1.02rem;line-height:1.35}
+.card .meta{display:flex;flex-wrap:wrap;gap:6px 10px;margin:6px 0 4px;font-size:.92rem;color:var(--muted)}
+.call{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1.05rem;color:var(--ink);background:var(--bg);padding:2px 8px;border-radius:6px;border:1px solid var(--line);user-select:all}
+.tag{display:inline-block;padding:1px 8px;border-radius:999px;font-size:.82rem;font-weight:600}
+.ok{background:var(--ok-soft);color:var(--ok)}
+.warn{background:var(--warn-soft);color:var(--warn)}
+.no{background:var(--no-soft);color:var(--no)}
+.pri{color:var(--accent);font-weight:700;letter-spacing:1px}
+.shoot{margin-top:6px;font-size:.97rem}
+.shoot b{color:var(--accent)}
+details{margin:6px 0}
+summary{cursor:pointer;font-weight:600;padding:6px 0}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:.88rem}
+.progress{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:10px 16px;font-size:.95rem;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.progress button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:6px 10px;font-size:.9rem}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em;background:var(--accent-soft);padding:1px 5px;border-radius:4px}
+a{color:var(--accent)}
+.small{font-size:.9rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>國家圖書館總館：一趟清單與翻拍章節</h1>
+  <p class="sub">臺北市中正區中山南路 20 號（捷運中正紀念堂站）。在架狀態查於 2026-10-18 晚。</p>
+</header>
+
+<nav class="jump">
+  <a href="#prep">準備</a>
+  <a href="#s1">① 2樓新書區</a>
+  <a href="#s2">② 典藏書庫</a>
+  <a href="#s3">③ 5樓參考室</a>
+  <a href="#shoot">翻拍章節</a>
+  <a href="#missing">國圖沒有的</a>
+</nav>
+
+<h2 id="prep">0. 規則與準備</h2>
+<div class="note">中和的「國立臺灣圖書館」是另一間獨立的館，不是國圖分館。這頁只針對中山南路的國家圖書館總館。</div>
+<ul>
+  <li>帶<b>身分證</b>，1 樓辦閱覽證（免費，當場）。可先線上預辦。</li>
+  <li>國圖<b>一律不外借</b>，館內閱覽。研究用途只拍需要的章節即可，整本翻拍沒必要。</li>
+  <li>開架區拿了就看：<b>2 樓中文新書區</b>、<b>5 樓參考暨政府資訊室</b>。</li>
+  <li>「總館典藏書庫」是閉架：<b>一進館先在館內電腦把所有調閱單一次送出</b>（約 20 到 30 分鐘到），再去開架區看書。</li>
+  <li>每張卡片的方框可以打勾，進度存在這支手機裡。</li>
+</ul>
+
+<h2 id="s1">第一站：2 樓中文新書區（開架，先拿這四本）</h2>
+
+<div class="card" data-id="a1"><div class="top"><input type="checkbox"><div>
+  <div class="title">正統鹿耳門聖母廟土城香：陣頭文化（2024）</div>
+  <div class="meta"><span class="call">272.71 8276:2</span><span class="tag ok">在架</span><span class="pri">★★★</span></div>
+  <div class="shoot"><b>拍：</b>見下方翻拍章節 A</div>
+</div></div></div>
+
+<div class="card" data-id="a2"><div class="top"><input type="checkbox"><div>
+  <div class="title">正統鹿耳門聖母廟土城香：鹿耳門媽香‧五府千歲醮（2024）</div>
+  <div class="meta"><span class="call">272.71 8256</span><span class="tag ok">在架</span><span class="pri">★★★</span></div>
+  <div class="shoot"><b>拍：</b>見翻拍章節 B（先拍目錄）</div>
+</div></div></div>
+
+<div class="card" data-id="a3"><div class="top"><input type="checkbox"><div>
+  <div class="title">正統鹿耳門聖母廟媽祖信仰脈絡研究（陸昕慈，2024）</div>
+  <div class="meta"><span class="call">272.71 8462:3</span><span class="tag ok">在架</span><span class="pri">★★★</span></div>
+  <div class="shoot"><b>拍：</b>見翻拍章節 C</div>
+</div></div></div>
+
+<div class="card" data-id="a4"><div class="top"><input type="checkbox"><div>
+  <div class="title">熱蘭遮城日誌（江樹生譯註，2024 新版）</div>
+  <div class="meta"><span class="call">733.25 8336 113</span><span class="tag ok">在架</span><span class="pri">★☆☆</span></div>
+  <div class="shoot"><b>拍：</b>低優先。只查索引「鹿耳門／Lacquymoye／北線尾」兩三處。</div>
+</div></div></div>
+
+<h2 id="s2">第二站：典藏書庫調閱（進館就送單）</h2>
+
+<div class="card" data-id="b1"><div class="top"><input type="checkbox"><div>
+  <div class="title">鹿耳門聖母廟土城仔香（周宗楊、吳明勳，2016）</div>
+  <div class="meta"><span class="call">733.9/127.4 8626</span><span class="tag ok">在架</span><span class="pri">★★★</span></div>
+  <div class="shoot"><b>拍：</b>見翻拍章節 D（先拍目錄）</div>
+</div></div></div>
+
+<div class="card" data-id="b2"><div class="top"><input type="checkbox"><div>
+  <div class="title">海風牽引臺17：從北馬仔到灣裡（周宗楊）</div>
+  <div class="meta"><span class="call">733.9/129.4 8626</span><span class="tag ok">在架</span><span class="pri">★★★</span></div>
+  <div class="shoot"><b>拍：</b>目錄＋土城仔、青草崙、鹿耳門、四草、安順鹽田各節。</div>
+</div></div></div>
+
+<div class="card" data-id="b3"><div class="top"><input type="checkbox"><div>
+  <div class="title">臺南土城正統鹿耳門聖母廟廟誌（2013）</div>
+  <div class="meta"><span class="call">272.71 8797</span><span class="tag ok">在架</span><span class="pri">★★☆</span></div>
+  <div class="shoot"><b>拍：</b>目錄＋沿革、王船來歷（泉州富美宮說）、歷科香醮表、組織（主會／角頭）。</div>
+</div></div></div>
+
+<div class="card" data-id="b4"><div class="top"><input type="checkbox"><div>
+  <div class="title">鹿耳門志（黃文博、吳建昇、陳桂蘭，2011）</div>
+  <div class="meta"><span class="call">733.9/127.1 8363</span><span class="tag ok">在架</span><span class="pri">★★☆</span></div>
+  <div class="shoot"><b>拍：</b>目錄＋地理變遷、媽祖宮庄與 13 房、神像播遷、正統論爭各章。</div>
+</div></div></div>
+
+<div class="card" data-id="b5"><div class="top"><input type="checkbox"><div>
+  <div class="title">鹿耳門志 第一輯（鹿耳門志編輯委員會）</div>
+  <div class="meta"><span class="call">733.9/127.1 8445 78</span><span class="tag ok">在架</span><span class="pri">★★☆</span></div>
+  <div class="shoot"><b>拍：</b>目錄＋與上一本不同的章節即可。</div>
+</div></div></div>
+
+<div class="card" data-id="b6"><div class="top"><input type="checkbox"><div>
+  <div class="title">臺南四草大眾廟誌：四草大眾廟開發史（許政雄，2014）</div>
+  <div class="meta"><span class="call">272.097 8474</span><span class="tag ok">在架</span><span class="pri">★★☆</span></div>
+  <div class="shoot"><b>拍：</b>沿革（創建年代依據）、鎮海大元帥陳酉／陳林每考、荷蘭骨骸塚、1971 建醮掘骨、歷次重修。</div>
+</div></div></div>
+
+<div class="card" data-id="b7"><div class="top"><input type="checkbox"><div>
+  <div class="title">南瀛藝陣誌（陳丁林，1997）</div>
+  <div class="meta"><span class="call">733.9/129.4 8526 v.11</span><span class="small">套書六樓書庫</span><span class="tag ok">在架</span><span class="pri">★★☆</span></div>
+  <div class="shoot"><b>拍：</b>目錄＋土城香各陣頭條目、蜈蚣陣、白鶴陣、金獅陣。</div>
+</div></div></div>
+
+<div class="card" data-id="b8"><div class="top"><input type="checkbox"><div>
+  <div class="title">鹿耳門天后宮送迎神儀典（黃文博）</div>
+  <div class="meta"><span class="call">733.9/127.4 8363-12</span><span class="tag ok">在架</span><span class="pri">★☆☆</span></div>
+  <div class="shoot"><b>拍：</b>目錄＋儀式流程一章（對照土城香王醮用）。</div>
+</div></div></div>
+
+<div class="card" data-id="b9"><div class="top"><input type="checkbox"><div>
+  <div class="title">臺南媽祖信仰研究（張耘書，2013）</div>
+  <div class="meta"><span class="call">272.097 8754</span><span class="tag ok">在架</span><span class="pri">★☆☆</span></div>
+  <div class="shoot"><b>拍：</b>鹿耳門雙廟一節。</div>
+</div></div></div>
+
+<div class="card" data-id="b10"><div class="top"><input type="checkbox"><div>
+  <div class="title">藝陣傳神（黃文博主編，2015）</div>
+  <div class="meta"><span class="call">線 991.87 8363</span><span class="tag ok">在架</span><span class="pri">★☆☆</span></div>
+  <div class="shoot"><b>拍：</b>砂崙腳清聖宮八家將、蜈蚣陣條目。</div>
+</div></div></div>
+
+<div class="card" data-id="b11"><div class="top"><input type="checkbox"><div>
+  <div class="title">臺灣的媽祖信仰（石萬壽）</div>
+  <div class="meta"><span class="call">272.71 8443</span><span class="tag ok">在架</span><span class="pri">★☆☆</span></div>
+  <div class="shoot"><b>拍：</b>鹿耳門相關一章。</div>
+</div></div></div>
+
+<div class="card" data-id="b12"><div class="top"><input type="checkbox"><div>
+  <div class="title">聽見台江天籟：臺灣暗蟬（台江國家公園管理處，2020）</div>
+  <div class="meta"><span class="call">387.764 8736:2</span><span class="tag ok">在架</span><span class="pri">★☆☆</span></div>
+  <div class="shoot"><b>拍：</b>目錄＋生活史、棲地、族群推估、寄主植物各節；版權頁。</div>
+</div></div></div>
+
+<details><summary>可略的兩項</summary>
+  <div class="card" data-id="b13"><div class="top"><input type="checkbox"><div>
+    <div class="title">臺南州祠廟名鑑 1933 日文原版</div>
+    <div class="meta"><span class="call">線 272.097 7464</span><span class="small">日文書庫</span><span class="tag ok">在架</span></div>
+    <div class="shoot">不必，5 樓有復刻本。</div>
+  </div></div></div>
+  <div class="card" data-id="b14"><div class="top"><input type="checkbox"><div>
+    <div class="title">臺江黑面琵鷺研究報告 102／103／104 年度（王穎）</div>
+    <div class="meta"><span class="call">388.897 843 102/103/104</span><span class="tag ok">在架</span><span class="small">103、104 是光碟</span></div>
+    <div class="shoot">GRB 線上有全文，可略。</div>
+  </div></div></div>
+</details>
+
+<h2 id="s3">第三站：5 樓參考暨政府資訊室（開架）</h2>
+
+<div class="card" data-id="c1"><div class="top"><input type="checkbox"><div>
+  <div class="title">臺南州祠廟名鑑（2002 復刻本）</div>
+  <div class="meta"><span class="call">R 272 8464:2</span><span class="tag ok">在架</span><span class="pri">★★☆</span></div>
+  <div class="shoot"><b>拍：</b>新豐郡安順庄、北門郡七股庄兩段全部。特別找土城仔、青草崙、四草、媽祖宮、海尾寮、學甲寮各廟條目（每條只有幾行，兩三頁拍完）。</div>
+</div></div></div>
+
+<div class="card" data-id="c2"><div class="top"><input type="checkbox"><div>
+  <div class="title">臺灣地名辭書（多卷，找臺南市卷）</div>
+  <div class="meta"><span class="call">R 733.3704 8647</span><span class="small">有 97、107 等不同年版</span><span class="tag ok">在架</span><span class="pri">★★☆</span></div>
+  <div class="shoot"><b>拍：</b>安南區一節全部：土城仔、青草崙、十份塭、各「寮」、四草、鹿耳門、媽祖宮、安順。</div>
+</div></div></div>
+
+<div class="card" data-id="c3"><div class="top"><input type="checkbox"><div>
+  <div class="title">臺灣堡圖（地圖）</div>
+  <div class="meta"><span class="call">M 733.35 8455</span><span class="tag ok">在架</span></div>
+  <div class="shoot">可略，中研院線上有。</div>
+</div></div></div>
+
+<h2 id="shoot">翻拍章節（四本核心書）</h2>
+
+<h3>A. 《土城香：陣頭文化》（目錄已取得）</h3>
+<p>結構是 7 個陣頭各 3 節：【起式】歷史淵源、【武陣】陣法典故與特色、【傳炬】發展現況與扎根傳承。</p>
+<ul>
+  <li><b>全部 7 章的【起式】與【傳炬】都拍</b>（成立年、傳承人、現況）。</li>
+  <li>【武陣】只拍 Ch1 青草崙蜈蚣陣、Ch3 蚵寮角宋江白鶴陣、Ch4 郭岑寮金獅陣。</li>
+  <li>另拍：作者序、【開路】、【壓陣】結論、版權頁。</li>
+</ul>
+<details><summary>七章對照</summary>
+<ul>
+  <li>Ch1 青草崙‧紫金宮‧百足真人蜈蚣陣</li>
+  <li>Ch2 砂崙腳‧清聖宮‧八家將</li>
+  <li>Ch3 蚵寮角‧宋江白鶴陣</li>
+  <li>Ch4 郭岑寮‧聖岑宮‧金獅陣</li>
+  <li>Ch5 虎尾寮‧伍聖宮‧宋江陣</li>
+  <li>Ch6 學甲寮‧慈興宮‧宋江陣</li>
+  <li>Ch7 海尾寮‧海尾朝皇宮‧宋江陣</li>
+</ul>
+</details>
+
+<h3>B. 《土城香：鹿耳門媽香‧五府千歲醮》（線上查不到目錄）</h3>
+<p>先拍目錄頁，再找這些主題的章節：</p>
+<ul>
+  <li>香科沿革與<b>歷科年表</b>（1961 辛丑起逐科；主會／主普角頭）。這是最大缺口。</li>
+  <li><b>十一角頭</b>與角頭廟、輪值制度、2023 開放擲筊。</li>
+  <li><b>香路</b>／路關圖（任何地圖頁都拍）。</li>
+  <li><b>王船</b>：請王、王府、入塢（只祭不送）的流程與說明。</li>
+  <li>道士、科儀、三朝醮流程。</li>
+  <li>徵引書目。</li>
+</ul>
+
+<h3>C. 《媽祖信仰脈絡研究》（目錄已取得）</h3>
+<ul>
+  <li>00 前言。</li>
+  <li>02 地理變遷：古圖與文獻、當代研究（兩節）。</li>
+  <li>03 神祇傳承：1913 王船上岸、1914 重建、1918 迎神尊回土城（全章）。</li>
+  <li>04 由保安宮到鹿耳門聖母廟。</li>
+  <li>附錄「西港斷香事件」（全部）。</li>
+  <li>徵引書目（全部）。</li>
+  <li>可略：推薦序、01 歷史溯源。</li>
+</ul>
+
+<h3>D. 《鹿耳門聖母廟土城仔香》2016（線上查不到目錄）</h3>
+<p>先拍目錄，再找：</p>
+<ul>
+  <li>土城仔香由來（1958 斷香、1961 首科）。</li>
+  <li><b>歷科香科表</b>。</li>
+  <li><b>角頭組織</b>（角頭名單、角頭廟、主會輪值）。</li>
+  <li>各陣頭沿革（A 已拍可略）。</li>
+  <li><b>香路圖</b>。</li>
+  <li>王醮流程、王船。</li>
+  <li>參考書目。</li>
+</ul>
+
+<h2 id="missing">國圖沒有、需另行處理</h2>
+<table>
+<thead><tr><th>書</th><th>情況</th><th>怎麼辦</th></tr></thead>
+<tbody>
+<tr><td>南瀛刈香誌（黃文博 1994）</td><td>國圖本館無實體</td><td>國立臺灣圖書館（中和）三樓可外借 733.9654 4302 v.1；或臺大 673.29/129.1 4039</td></tr>
+<tr><td>安南區志（1999）</td><td>國圖無；國台圖一冊顯示借出至 2026-12-31；全臺另只有成大、屏東大學</td><td>館際合作複印指定章節；先靠《臺南文化》1962 文獻與《臺灣地名辭書》補</td></tr>
+<tr><td>進香．醮．祭與社會文化變遷</td><td>國圖即時查詢無</td><td>北市圖 272.907 0467、國台圖 733.4 0467 可外借</td></tr>
+<tr><td>島嶼DNA（陳耀昌）</td><td>國圖即時查詢無</td><td>北市圖、新北、國台圖可外借；非必要</td></tr>
+<tr><td>鹿耳門地理演變考（盧嘉興 1965）</td><td>國圖倉儲區不可調閱</td><td>國台圖六樓 733.965 2147-2；1962《臺南文化》同場論戰 11 篇已有全文</td></tr>
+<tr><td>臺灣舊地名之沿革（洪敏麟）</td><td>國圖倉儲區不可調閱</td><td>國台圖六樓；或靠《臺灣地名辭書》即可</td></tr>
+<tr><td>臺灣采訪冊、東槎紀略</td><td>免費線上</td><td>維基文庫全文，不必翻拍</td></tr>
+</tbody>
+</table>
+
+<h2>拍完之後</h2>
+<p>照片放到 <code>資料統整研究/raw/翻拍/書名/</code>，依頁碼命名（例如 <code>p045.jpg</code>）。先拍目錄頁傳過來，可以在你還在館內時確認還需要哪幾頁。</p>
+<p class="small">出發前可再跑一次：<code>CAT=ncl python3 工具/nbinet_search.py --batch 工具/書單_國圖.txt</code></p>
+</div>
+
+<div class="progress"><span id="prog">0 / 0 已完成</span><button id="reset" type="button">清除勾選</button></div>
+
+<script>
+(function(){
+  var KEY='ncl-trip-v1';
+  var state={};
+  try{state=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){state={};}
+  var cards=document.querySelectorAll('.card[data-id]');
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+  function render(){
+    var done=0;
+    cards.forEach(function(c){
+      var id=c.getAttribute('data-id'), cb=c.querySelector('input[type=checkbox]');
+      var v=!!state[id]; cb.checked=v; c.classList.toggle('done',v); if(v)done++;
+    });
+    document.getElementById('prog').textContent=done+' / '+cards.length+' 已完成';
+  }
+  cards.forEach(function(c){
+    var id=c.getAttribute('data-id'), cb=c.querySelector('input[type=checkbox]');
+    cb.addEventListener('change',function(){state[id]=cb.checked; save(); render();});
+  });
+  document.getElementById('reset').addEventListener('click',function(){
+    if(confirm('清除所有勾選？')){state={}; save(); render();}
+  });
+  render();
+})();
+</script>
+</body>
+</html>
