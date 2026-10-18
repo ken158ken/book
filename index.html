@@ -59,6 +59,17 @@ th{color:var(--muted);font-weight:600;font-size:.88rem}
 code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em;background:var(--accent-soft);padding:1px 5px;border-radius:4px}
 a{color:var(--accent)}
 .small{font-size:.9rem;color:var(--muted)}
+.cmp{width:100%;border-collapse:collapse;font-size:.9rem;table-layout:fixed}
+.cmp th,.cmp td{padding:8px 5px;border-bottom:1px solid var(--line);vertical-align:top;word-break:break-word}
+.cmp th{font-size:.85rem;color:var(--muted)}
+.cmp th:first-child,.cmp td:first-child{width:32%}
+.cmp .y{color:var(--ok);font-weight:700}
+.cmp .n{color:var(--no);font-weight:700}
+.cmp .w{color:var(--warn);font-weight:700}
+.cmp .loc{display:block;font-size:.82rem;color:var(--muted);line-height:1.35}
+.cmp .cn{display:block;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.82rem;line-height:1.35}
+.lend{display:inline-block;font-size:.75rem;padding:0 5px;border-radius:4px;background:var(--ok-soft);color:var(--ok);margin-left:2px}
+
 </style>
 </head>
 <body>
@@ -70,6 +81,7 @@ a{color:var(--accent)}
 
 <nav class="jump">
   <a href="#prep">準備</a>
+  <a href="#cmp">兩館對照</a>
   <a href="#s1">① 2樓新書區</a>
   <a href="#s2">② 典藏書庫</a>
   <a href="#s3">③ 5樓參考室</a>
@@ -86,6 +98,45 @@ a{color:var(--accent)}
   <li>「總館典藏書庫」是閉架：<b>一進館先在館內電腦把所有調閱單一次送出</b>（約 20 到 30 分鐘到），再去開架區看書。</li>
   <li>每張卡片的方框可以打勾，進度存在這支手機裡。</li>
 </ul>
+
+
+<h2 id="cmp">兩館對照：國圖 vs 國臺圖</h2>
+<p class="small">國圖＝國家圖書館總館（中山南路 20 號，一律不外借）。國臺圖＝國立臺灣圖書館（新北市中和區中安街 85 號，捷運永安市場站步行約 10 分鐘，02-2926-6888；辦證免費，2、3 樓可外借，6 樓臺灣學研究中心限館內）。29 本中國圖有 22 本、國臺圖有 25 本。狀態查於 2026-10-18。</p>
+<table class="cmp">
+<thead><tr><th>書</th><th>國圖</th><th>國臺圖</th></tr></thead>
+<tbody>
+<tr><td><span class="pri">★★★</span><br>土城香：陣頭文化（2024）</td><td><span class="y">✓</span><span class="loc">2樓中文新書區・開架</span><span class="cn">272.71 8276:2</span></td><td><span class="y">✓</span><span class="loc">6樓臺灣資料圖書區 I・館內</span><span class="cn">272.71 1201-3 113</span></td></tr>
+<tr><td><span class="pri">★★★</span><br>土城香：鹿耳門媽香‧五府千歲醮（2024）</td><td><span class="y">✓</span><span class="loc">2樓中文新書區・開架</span><span class="cn">272.71 8256</span></td><td><span class="y">✓</span><span class="loc">6樓臺灣資料圖書區 I・館內</span><span class="cn">272.71 1201-2 113</span></td></tr>
+<tr><td><span class="pri">★★★</span><br>媽祖信仰脈絡研究（陸昕慈 2024）</td><td><span class="y">✓</span><span class="loc">2樓中文新書區・開架</span><span class="cn">272.71 8462:3</span></td><td><span class="y">✓</span><span class="loc">6樓臺灣資料圖書區 I・館內</span><span class="cn">272.71 1201 113</span></td></tr>
+<tr><td><span class="pri">★★★</span><br>鹿耳門聖母廟土城仔香（2016）</td><td><span class="y">✓</span><span class="loc">典藏書庫・調閱</span><span class="cn">733.9/127.4 8626</span></td><td><span class="y">✓</span><span class="loc">6樓臺灣資料圖書區 II・館內</span><span class="cn">733.9614 7734A 105</span></td></tr>
+<tr><td><span class="pri">★★★</span><br>海風牽引臺17（周宗楊）</td><td><span class="y">✓</span><span class="loc">典藏書庫・調閱</span><span class="cn">733.9/129.4 8626</span></td><td><span class="y">✓</span><span class="loc">6樓本土教育資源專區・館內</span><span class="cn">733.9614 7734A 103</span></td></tr>
+<tr><td><span class="pri">★★☆</span><br>南瀛刈香誌（黃文博 1994）</td><td><span class="n">✗</span><span class="loc">本館無實體</span></td><td><span class="y">✓</span><span class="lend">可外借</span><span class="loc">3樓中文圖書區</span><span class="cn">733.9654 4302 v.1</span></td></tr>
+<tr><td><span class="pri">★★☆</span><br>南瀛藝陣誌（陳丁林 1997）</td><td><span class="y">✓</span><span class="loc">典藏書庫 套書六樓書庫・調閱</span><span class="cn">733.9/129.4 8526 v.11</span></td><td><span class="y">✓</span><span class="lend">可外借</span><span class="loc">3樓中文圖書區</span><span class="cn">733.9654 4302-3 v.1</span></td></tr>
+<tr><td><span class="pri">★★☆</span><br>臺南土城正統鹿耳門聖母廟廟誌（2013）</td><td><span class="y">✓</span><span class="loc">典藏書庫・調閱</span><span class="cn">272.71 8797</span></td><td><span class="n">✗</span><span class="loc">查無</span></td></tr>
+<tr><td><span class="pri">★★☆</span><br>鹿耳門志（黃文博等 2011，上下冊）</td><td><span class="y">✓</span><span class="loc">典藏書庫・調閱</span><span class="cn">733.9/127.1 8363</span></td><td><span class="y">✓</span><span class="loc">6樓臺灣資料圖書區 II・館內</span><span class="cn">733.9611 4404 v.1, v.2</span></td></tr>
+<tr><td><span class="pri">★★☆</span><br>鹿耳門志 第一輯（編輯委員會）</td><td><span class="y">✓</span><span class="loc">典藏書庫・調閱</span><span class="cn">733.9/127.1 8445 78</span></td><td><span class="y">✓</span><span class="loc">B2 密集書庫・櫃臺調閱</span><span class="cn">797.32 0174</span></td></tr>
+<tr><td><span class="pri">★★☆</span><br>臺南四草大眾廟誌（許政雄 2014）</td><td><span class="y">✓</span><span class="loc">典藏書庫・調閱</span><span class="cn">272.097 8474</span></td><td><span class="y">✓</span><span class="lend">可外借</span><span class="loc">2樓中文圖書區</span><span class="cn">272.097 0814 103</span></td></tr>
+<tr><td><span class="pri">★★☆</span><br>臺南州祠廟名鑑（2002 復刻本）</td><td><span class="y">✓</span><span class="loc">5樓參考暨政府資訊室・開架</span><span class="cn">R 272 8464:2</span></td><td><span class="n">✗</span><span class="loc">書名查無（聯合目錄曾列 272 4344，現場可再問）</span></td></tr>
+<tr><td><span class="pri">★★☆</span><br>臺灣地名辭書 臺南市卷</td><td><span class="y">✓</span><span class="loc">5樓參考暨政府資訊室・開架</span><span class="cn">R 733.3704 8647</span></td><td><span class="y">✓</span><span class="loc">6樓臺灣資料圖書區 II（5樓參考區另有）</span><span class="cn">733.3704 90280 v.21</span></td></tr>
+<tr><td><span class="pri">★★☆</span><br>安南區志（林德政 1999）</td><td><span class="n">✗</span><span class="loc">無</span></td><td><span class="w">⚠</span><span class="loc">6樓臺灣資料圖書區 II，狀態顯示至 2026-12-31，去前電話確認 02-2926-6888</span><span class="cn">733.9611 3474 88</span></td></tr>
+<tr><td><span class="pri">★★☆</span><br>聽見台江天籟：臺灣暗蟬（2020）</td><td><span class="y">✓</span><span class="loc">典藏書庫・調閱</span><span class="cn">387.764 8736:2</span></td><td><span class="y">✓</span><span class="lend">可外借</span><span class="loc">3樓青少年圖書區</span><span class="cn">387.764 1170 109</span></td></tr>
+<tr><td><span class="pri">★☆☆</span><br>鹿耳門天后宮送迎神儀典（黃文博）</td><td><span class="y">✓</span><span class="loc">典藏書庫・調閱</span><span class="cn">733.9/127.4 8363-12</span></td><td><span class="y">✓</span><span class="loc">6樓臺灣資料圖書區 II・館內</span><span class="cn">733.4618 4404 105</span></td></tr>
+<tr><td><span class="pri">★☆☆</span><br>臺南媽祖信仰研究（張耘書 2013）</td><td><span class="y">✓</span><span class="loc">典藏書庫・調閱</span><span class="cn">272.097 8754</span></td><td><span class="y">✓</span><span class="loc">6樓臺灣資料圖書區 I・館內</span><span class="cn">272.71 1155 102</span></td></tr>
+<tr><td><span class="pri">★☆☆</span><br>藝陣傳神（黃文博主編 2015）</td><td><span class="y">✓</span><span class="loc">典藏書庫・調閱</span><span class="cn">線 991.87 8363</span></td><td><span class="y">✓</span><span class="loc">6樓本土教育資源專區・館內</span><span class="cn">991.87 4404 104</span></td></tr>
+<tr><td><span class="pri">★☆☆</span><br>臺灣的媽祖信仰（石萬壽）</td><td><span class="y">✓</span><span class="loc">典藏書庫・調閱</span><span class="cn">272.71 8443</span></td><td><span class="y">✓</span><span class="lend">可外借</span><span class="loc">B2 密集書庫（6樓另有館內本）</span><span class="cn">272.71 1044 89</span></td></tr>
+<tr><td><span class="pri">★☆☆</span><br>進香．醮．祭與社會文化變遷（謝國興編）</td><td><span class="n">✗</span><span class="loc">即時查詢無</span></td><td><span class="y">✓</span><span class="lend">可外借</span><span class="loc">3樓中文圖書區</span><span class="cn">733.4 0467 108</span></td></tr>
+<tr><td><span class="pri">★☆☆</span><br>島嶼DNA（陳耀昌）</td><td><span class="n">✗</span><span class="loc">即時查詢無</span></td><td><span class="y">✓</span><span class="lend">可外借</span><span class="loc">2樓中文圖書區</span><span class="cn">078 7596 104</span></td></tr>
+<tr><td><span class="pri">★☆☆</span><br>熱蘭遮城日誌（江樹生譯註）</td><td><span class="y">✓</span><span class="loc">2樓中文新書區・開架（2024 版）</span><span class="cn">733.25 8336 113</span></td><td><span class="y">✓</span><span class="lend">可外借</span><span class="loc">3樓中文圖書區（2024 版全 10 冊）</span><span class="cn">733.25 3142 113 v.1–10</span></td></tr>
+<tr><td><span class="pri">★☆☆</span><br>鹿耳門地理演變考（盧嘉興 1965）</td><td><span class="n">✗</span><span class="loc">倉儲區不可調閱</span><span class="cn">669.8 8545</span></td><td><span class="y">✓</span><span class="loc">6樓臺灣資料圖書區 II・館內</span><span class="cn">733.965 2147-2</span></td></tr>
+<tr><td><span class="pri">★☆☆</span><br>臺灣舊地名之沿革（洪敏麟）</td><td><span class="n">✗</span><span class="loc">倉儲區不可調閱</span><span class="cn">733.37 8294</span></td><td><span class="y">✓</span><span class="loc">6樓臺灣資料圖書區 II・館內</span><span class="cn">733.3 3480-3</span></td></tr>
+<tr><td><span class="pri">可略</span><br>臺灣堡圖</td><td><span class="y">✓</span><span class="loc">5樓參考室（地圖）</span><span class="cn">M 733.35 8455</span></td><td><span class="y">✓</span><span class="loc">6樓輿圖區・洽櫃臺</span><span class="cn">733.35 4326 78 v.1–3</span></td></tr>
+<tr><td><span class="pri">可略</span><br>東槎紀略（維基文庫有全文）</td><td><span class="y">✓</span><span class="loc">2樓參考區叢書區／6樓漢學中心</span><span class="cn">863.08 8346</span></td><td><span class="y">✓</span><span class="loc">6樓特藏舊籍複製本區</span><span class="cn">733.8 4299</span></td></tr>
+<tr><td><span class="pri">可略</span><br>臺灣采訪冊（維基文庫有全文）</td><td><span class="n">✗</span><span class="loc">倉儲區不可調閱</span></td><td><span class="y">✓</span><span class="loc">6樓特藏舊籍複製本區</span><span class="cn">733.8 4382-3 v.1–3</span></td></tr>
+<tr><td><span class="pri">可略</span><br>臺南州統計書（臺大線上影像）</td><td><span class="y">✓</span><span class="loc">微縮資料</span><span class="cn">514.232 7454</span></td><td><span class="y">✓</span><span class="loc">6樓特藏舊籍複製本區</span><span class="cn">0757 7</span></td></tr>
+<tr><td><span class="pri">可略</span><br>臺江黑面琵鷺研究報告 102–104（GRB 有全文）</td><td><span class="y">✓</span><span class="loc">典藏書庫（103/104 光碟）</span><span class="cn">388.897 843</span></td><td><span class="n">✗</span><span class="loc">查無</span></td></tr>
+</tbody>
+</table>
+<div class="note">兩邊都跑的分法：國圖拿 2 樓三冊新書、《廟誌》、《祠廟名鑑》復刻本；國臺圖拿可外借的《南瀛刈香誌》《南瀛藝陣誌》《四草大眾廟誌》《熱蘭遮城日誌》《聽見台江天籟》《進香醮祭》，以及國圖倉儲區調不到的《鹿耳門地理演變考》《臺灣舊地名之沿革》，並確認《安南區志》。</div>
 
 <h2 id="s1">第一站：2 樓中文新書區（開架，先拿這四本）</h2>
 
